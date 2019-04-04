@@ -5,7 +5,7 @@ module.exports = {
 
   addNote(title, body) {
     const notes = this.loadNotes()
-    const duplicateNotes = notes.filter(note => note.title === title)
+    const duplicateNotes = notes.filter((note) => note.title === title)
     if(duplicateNotes.length === 0) {
       notes.push({title, body})
       this.saveNotes(notes)
@@ -24,6 +24,12 @@ module.exports = {
     }else {
       console.log(chalk.red(`no note found`))
     }
+  },
+  listNotes() {
+    const notes = this.loadNotes()
+    notes.forEach(({title, body}) => {
+      console.log(`This is the title: ${chalk.yellow(title)}. This is the body: ${chalk.red(body)}.`)
+    })
   },
 
   saveNotes: notes => fs.writeFileSync('notes.json', JSON.stringify(notes)),
