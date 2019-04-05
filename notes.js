@@ -5,8 +5,8 @@ module.exports = {
 
   addNote(title, body) {
     const notes = this.loadNotes()
-    const duplicateNotes = notes.filter((note) => note.title === title)
-    if(duplicateNotes.length === 0) {
+    const duplicateNote = notes.find(note => note.title === title)
+    if(!duplicateNote) {
       notes.push({title, body})
       this.saveNotes(notes)
       console.log(chalk.green('new note added'))
@@ -28,7 +28,8 @@ module.exports = {
   listNotes() {
     const notes = this.loadNotes()
     notes.forEach(({title, body}) => {
-      console.log(`This is the title: ${chalk.yellow(title)}. This is the body: ${chalk.red(body)}.`)
+      console.log(`This is the title: ${chalk.yellow(title)}. 
+      This is the body: ${chalk.red(body)}.`)
     })
   },
 
@@ -39,6 +40,15 @@ module.exports = {
       return JSON.parse(fs.readFileSync('notes.json').toString())
     } catch (err) {
       return [] //if note.json doesnt exist return an empty array
+    }
+  },
+  readNotes(title) {
+    const notes = this.loadNotes()
+    const foundNote = notes.find(note => note.title == title)
+    if(foundNote) {
+      console.log(chalk.green(`title: ${foundNote.title} body: ${foundNote.body}`))
+    } else {
+      console.log(chalk.red('note not found'))
     }
   }
 }
